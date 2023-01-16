@@ -62,36 +62,46 @@ def clickSelect(selectname, optiontext, closeFlag):
 
 def input_data_frame(frameid):
     g_browser.backtodef()
-    g_browser.jumptoFrameByIDfromHere('newFrame')
+    # g_browser.jumptoFrameByIDfromHere('newFrame')
     g_browser.jumptoFrameByIDfromHere(frameid)
     jobname=g_conf.get(frameid, 'jobname')
     print ("jobname" + jobname)
     g_browser.SendKeyByXXX('taskNameSelect', 'id', jobname)
 
-    idlist= [ 'resourceForDivisionSelect', 'datagrid-row-r3-2-3',]
+    # idlist= [ 'resourceForDivisionId', 'datagrid-row-r3-2-3',]
+    idlist= [ 'resourceForDivisionId']
     for idele in idlist:
         print (idele)
         g_browser.clickByXXX(idele,'id')
 
 
+    # DCN
+    # g_browser.clickByXXX('//*[@id="datagrid-row-r2-2-3"]/td[1]/div/div')
+    # yjy ping tai
+    g_browser.clickByXXX('//*[@id="datagrid-row-r2-2-5"]/td[1]/div/div')
+
     subtypename=g_conf.get(frameid, 'subtype')
-    g_browser.SendKeyByXXX('workClassSelect', 'id', subtypename)
-    g_browser.clickByXXX('workClassSelect', 'id')
-    wait_until(g_browser.clickByXXX, ['datagrid-row-r4-2-0', 'id'])
+    g_browser.SendKeyByXXX('workClassId', 'id', subtypename)
+    g_browser.clickByXXX('workClassId', 'id')
+    g_browser.clickByXXX('//*[@id="datagrid-row-r3-2-1"]/td[1]/div')
+    # wait_until(g_browser.clickByXXX, ['//*[@id="datagrid-row-r4-2-0"]/td[1]/div/div'])
     # g_browser.clickByXXX('datagrid-row-r4-2-0', 'id')
 
-    jobtype=g_conf.get(frameid, 'jobtype')
-    g_browser.SendKeyByXXX('taskClassSelect', 'id', jobtype)
-    g_browser.clickByXXX('taskClassSelect', 'id')
-    g_browser.clickByXXX('datagrid-row-r5-2-0', 'id')
+    # 任务分类
+    # jobtype=g_conf.get(frameid, 'jobtype')
+    # g_browser.SendKeyByXXX('taskClassId', 'id', jobtype)
+    # g_browser.clickByXXX('taskClassId', 'id')
 
     project=g_conf.get(frameid, 'project')
     print ("project:", project)
-    g_browser.SendKeyByXXX('projectSelect', 'id', project)
-    
-    g_browser.clickByXXX('projectSelect', 'id')
+    g_browser.clickByXXX('projectId', 'id')
+    time.sleep(.8)
+    g_browser.SendKeyByXXX('projectId', 'id', project)
+    time.sleep(.8)
+    g_browser.clickByXXX('projectId', 'id')
     #time.sleep(0.8)
-    g_browser.clickByXXX('datagrid-row-r6-2-0', 'id')
+    # g_browser.clickByXXX('datagrid-row-r6-2-0', 'id')
+    g_browser.clickByXXX('//*[@id="datagrid-row-r4-2-0"]/td[1]/div/div')
 
     ## modify for "5GNR12.0PJ1"
     #g_browser.clickByXXX('datagrid-row-r6-2-1', 'id')
@@ -101,22 +111,30 @@ def input_data_frame(frameid):
     print ("workpack:", workpack)
     if workpack:
         print ('workpack is not none')
-        g_browser.SendKeyByXXX('projectSelect', 'id', workpack)
+        g_browser.SendKeyByXXX('projectId', 'id', workpack)
         
-        g_browser.clickByXXX('workPackSelect', 'id')        
-        g_browser.clickByXXX('datagrid-row-r7-2-0', 'id')
+        g_browser.clickByXXX('workPackId', 'id')
+        # g_browser.clickByXXX('datagrid-row-r7-2-0', 'id')
+        g_browser.clickByXXX('//*[@id="datagrid-row-r5-2-0"]/td[1]/div/div')
+
 
     phase=g_conf.get(frameid, 'phase')
     print ("phase:", phase)
-    g_browser.SendKeyByXXX('stageSelect', 'id', phase)
-    g_browser.clickByXXX('stageSelect', 'id')
-    g_browser.clickByXXX('datagrid-row-r9-2-0', 'id')
+    g_browser.SendKeyByXXX('stageId', 'id', phase)
+    g_browser.clickByXXX('stageId', 'id')
+    time.sleep(.8)
+    g_browser.clickByXXX('//*[@id="datagrid-row-r5-2-0"]/td[2]/div')
+    # textXpath = "//*[text()[contains(.,'%s')]]" % phase
+    # targetEle = g_browser.getEleByXXX(textXpath, 'xpath')
+    # g_browser.clickByXXX(textXpath)
+
 
     activity=g_conf.get(frameid, 'activity')
-    g_browser.SendKeyByXXX('activitySelect', 'id', activity)
-    g_browser.clickByXXX('activitySelect', 'id')
-    g_browser.clickByXXX('datagrid-row-r10-2-0', 'id')
-
+    g_browser.SendKeyByXXX('activityId', 'id', activity)
+    g_browser.clickByXXX('activityId', 'id')
+    time.sleep(.8)
+    # g_browser.clickByXXX('datagrid-row-r10-2-0', 'id')
+    g_browser.clickByXXX('//*[@id="datagrid-row-r6-2-0"]/td[1]/div')
     # lineCount=random.random()
     # print (lineCount)
     # if(float(lineCount) > 0.5):
@@ -127,7 +145,7 @@ def input_data_frame(frameid):
     g_browser.SendKeyByXXX('_easyui_textbox_input1', 'id', lineCount)
 
     g_browser.SendKeyByXXX('_easyui_textbox_input7', 'id', '8')
-    extra_time=random.randint(1,2)
+    extra_time=random.randint(0,2)
     g_browser.SendKeyByXXX('_easyui_textbox_input8', 'id', extra_time)
 
     finishpercent=g_conf.get(frameid, "finishpercent")
@@ -185,9 +203,12 @@ def open_res():
     global g_browser
     g_browser=AutoBrowser(urladdr)
     browser = g_browser
-    browser.SendKeyByXXX("username", 'id', username)
-    browser.SendKeyByXXX("password", 'id', password)
-    browser.clickByXXX("submit", 'name')
+    nameXpath = "//input[@name='username']"
+    passXpath = "//input[@type='password']"
+    browser.SendKeyByXXX(nameXpath, 'xpath', username)
+    browser.SendKeyByXXX(passXpath, 'xpath', password)
+    submitXpath ="//button[@type='submit']"
+    browser.clickByXXX(submitXpath, 'xpath')
 
     handle_alert(browser)
 

@@ -1,0 +1,18 @@
+[site]
+; url = http://192.168.5.161:8080/resManage
+url = http://pms.ruijie.com.cn/res_manage/index.jhtml
+[user]
+usr=linzhengyuan
+pwd=xxxxxx
+
+[frame1]
+jobname=srv6 测试工具
+dep=研究院平台
+project=12.8PL3_S3
+workpack=
+subtype=工具/自动化平台开发
+phase=工具/自动化平台开发
+activity=新工具引入
+jobtype=
+finishpercent=100
+

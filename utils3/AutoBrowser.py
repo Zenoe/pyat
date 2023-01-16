@@ -71,7 +71,7 @@ class AutoBrowser:
         self.browser.maximize_window()
         self.browser.get(url)
         self.waittime=15
-        self.typefuncDict={"xpath":"find_element_by_xpath", "name": "find_element_by_name", "id": "find_element_by_id", "selector": "find_element_by_css_selector"}
+        self.typefuncDict={"xpaths": "find_elements_by_xpath","xpath":"find_element_by_xpath", "name": "find_element_by_name", "id": "find_element_by_id", "selector": "find_element_by_css_selector"}
 
     def SendKeyByXXX(self, ele_value, ele_type, text):
         targetEle=self.getEleByXXX(ele_value, ele_type)
@@ -91,7 +91,7 @@ class AutoBrowser:
     def clickButtonByValue(self, text, altertive=None):
         self.clickByXXX("//input[contains(@value,'%s')]" % (text), 'xpath')
 
-    def clickByXXX(self, ele_value, ele_type):
+    def clickByXXX(self, ele_value, ele_type='xpath'):
         # stale element reference: element is not attached to the page document
         # to avoid the StaleElementReferenceException, it must wait for the element to show
         self.browser.implicitly_wait(self.waittime)
@@ -118,8 +118,15 @@ class AutoBrowser:
 
     def jumptoFrameByIDfromHere(self, frameid):
         # self.browser.implicitly_wait(self.waittime)
-        iframe_handle = self.browser.find_element_by_id(frameid)
-        self.browser.switch_to_frame(iframe_handle)
+        # iframe_handle = self.browser.find_element_by_id(frameid)
+        # self.browser.switch_to_frame(iframe_handle)
+
+        # can not find frame by src attribute?
+        # frame = self.browser.find_element_by_xpath('//*[@src="/refsystem/res_day/daily_work_view.jhtml"]')
+        frame = self.browser.find_elements_by_tag_name("iframe")[0]
+        self.browser.switch_to_frame(frame)
+        frame = self.browser.find_element_by_xpath('//*[@id="frame1"]')
+        self.browser.switch_to_frame(frame)
 
     def jumptoFrameByID(self, frameid):
         self.browser.implicitly_wait(self.waittime)
