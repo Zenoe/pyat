@@ -7,10 +7,12 @@ import threading
 
 
 class Log:
-    def __init__(self):
+    def __init__(self, savePath):
         global logPath, resultPath, proDir
         proDir = readConfig.proDir
-        resultPath = os.path.join(proDir, "result")
+        resultPath = os.path.join(proDir, 'log')
+        if savePath is not None:
+            resultPath = savePath
         if not os.path.exists(resultPath):
             os.mkdir(resultPath)
         logPath = os.path.join(resultPath, str(datetime.now().strftime("%Y%m%d%H%M%S")))
@@ -94,11 +96,11 @@ class MyLog:
         pass
 
     @staticmethod
-    def get_log():
+    def get_logger_instance(savePath='log'):
 
         if MyLog.log is None:
             MyLog.mutex.acquire()
-            MyLog.log = Log()
+            MyLog.log = Log(savePath)
             MyLog.mutex.release()
 
         return MyLog.log

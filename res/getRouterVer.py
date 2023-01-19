@@ -6,8 +6,15 @@ import os
 import random
 import getopt, sys
 import datetime
-
+import re
+from selenium.webdriver.common.keys import Keys
 print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+
+
+sys.path.append('../utils3')
+from Log import MyLog as Log
+log = Log.get_logger_instance('./log')
+logger = log.get_logger()
 
 sys.path.append('../utils3')
 import readConfig as readConfig
@@ -71,22 +78,59 @@ def get_data():
 
     # ttext=g_browser.getEleByXXX("//*[contains(text(),'" +product+ "')]", 'xpaths')
     elements=g_browser.getEleByXXX("//td[(text()='" +product+ "')]", 'xpaths')
-    bfound = false
-    osDownloadUrl = ''
+    bfound = False
+    osDownloadUrl = None
     passRate = ''
     testDate = ''
 
+    date_regex = re.compile(r'^\d{4}-\d{1,2}-\d{1,2}$')
     for ele in elements:
         if bfound is True:
             break
         parentElement = ele.find_element_by_xpath('./..')
         cells = parentElement.find_elements_by_tag_name('td')
         for cell in cells:
-            if(cell.text == branch):
-                bfound = true
-            print(cell.text)
+            text = cell.text
+            if(text == branch):
+                bfound = True
+            if(text.startswith('http')):
+                osDownloadUrl = cell
+            if(text.endswith('%')):
+                passRate = text
+            if(date_regex.search(text)):
+                testDate = text
 
 
+    logger.warning('passRate: ' + passRate)
+    logger.info('passRate: ' + passRate)
+    logger.info('testDate: ' + testDate)
+
+    if passRate != '100%':
+        logger.warning('testDate: ' + testDate)
+        return
+    hrefEle = osDownloadUrl.find_elements_by_tag_name('a')
+    hrefEle[0].click()
+    time.sleep(0.2)
+
+    g_browser.switchWindow()
+    installBinHref = g_browser.getEleByXXX("//a[contains(text(), 'install.bin')]", 'xpath')
+    print(installBinHref.get_attribute("href"))
+
+    import datetime
+    # The programme is executed after midnight, so here we need to go back two days
+    twodaysb4 = datetime.datetime.now() - datetime.timedelta(days=2)
+    formattedTwodaysb4 = twodaysb4.strftime("%Y-%m-%d")
+    print('wanted date', formattedTwodaysb4)
+
+    trEle = installBinHref.find_element_by_xpath('../..')
+    cells = trEle.find_elements_by_tag_name('td')
+    for cell in cells:
+        text = cell.text
+        if(text.startswith(formattedTwodaysb4)):
+            print('')
+    print(trEle.text)
+    # osDownloadUrl.click()
+    # osDownloadUrl.send_keys(Keys.ENTER)
 # def getTime(keytext):
 #     ttext=g_browser.find_element_by_xpath("//b[contains(text(), keytext)]").text
 #     return ttext[-5:-3]
@@ -95,6 +139,7 @@ def get_data():
 def open_res():
     urladdr=g_conf.get("site", "url")
     username=g_conf.get("user", "usr")
+    print('user' + username)
     password=g_conf.get("user", "pwd")
 
     global g_browser

@@ -9,7 +9,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 import time
 
 from Log import MyLog as Log
-log = Log.get_log()
+log = Log.get_logger_instance()
 logger = log.get_logger()
 
 
@@ -81,6 +81,10 @@ class AutoBrowser:
 
     def switchActive(self):
         self.browser.switch_to_active_element()
+
+    def switchWindow(self):
+        #  switch the driver focus to the newly opened tab
+        self.browser.switch_to.window(self.browser.window_handles[1])
 
     def SelectByText(self, selectname, optiontext):
         tmp=Select(g_browser.find_elements_by_name(selectname)[1]).select_by_visible_text(optiontext)
